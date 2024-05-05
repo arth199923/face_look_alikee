@@ -6,9 +6,8 @@ import io
 import os
 from PIL import Image
 
-# Define your OpenAI API key and Segmind api key hide them due to security reasons
-OPENAIKEY=os.environ.get("OPENAIKEY")
-SEGMINDAPIKEY=os.environ.get("SEGMINDAPIKEY")
+# Define your OpenAI API key here , I hide it due to security reasons
+SegmindAPIKey = "SG_4ec6a76090edb729"
 
 
 def get_base64_image(uploaded_image):
