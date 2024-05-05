@@ -3,10 +3,13 @@ import requests
 import base64
 import random
 import io
+import os
 from PIL import Image
 
 # Define your OpenAI API key and Segmind api key hide them due to security reasons
-# Define your functions here
+OPENAIKEY=os.environ.get("OPENAIKEY")
+SEGMINDAPIKEY=os.environ.get("SEGMINDAPIKEY")
+
 
 def get_base64_image(uploaded_image):
     # Open the uploaded image
