@@ -60,6 +60,10 @@ def main():
     # Load sample image
     sample_image = Image.open("sample_upload.jpg")
 
+    # Display sample image
+    st.subheader("Here's a sample of uploaded and generated images:")
+    st.image(sample_image, caption="Sample Image", use_column_width=True)
+
     uploaded_image = st.file_uploader("Upload Image", type=['jpg', 'jpeg', 'png'])
 
     if uploaded_image is not None:
@@ -76,14 +80,10 @@ def main():
             col1.subheader("Uploaded Image:")
             col1.image(uploaded_image, caption="Uploaded Image", use_column_width=True)
 
-            # Display sample image
-            col2.subheader("Sample Image:")
-            col2.image(sample_image, caption="Sample Image", use_column_width=True)
-
             # Display generated images on the right
-            st.subheader("Generated Images:")
+            col2.subheader("Generated Images:")
             for i, image in enumerate(generated_images):
-                st.image(image, caption=f"Generated Image {i+1}", use_column_width=True)
+                col2.image(image, caption=f"Generated Image {i+1}", use_column_width=True)
 
     # Note about potential API key limitations
     st.markdown("""
