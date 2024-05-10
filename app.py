@@ -3,27 +3,23 @@ import requests
 import base64
 import random
 import io
-import os
 from PIL import Image
 
-# Define your OpenAI API key here , I hide it due to security reasons
+# Define your Segmind API key here
 SegmindAPIKey = "SG_4ec6a76090edb729"
 
-
+# Function to convert uploaded image to base64
 def get_base64_image(uploaded_image):
-    # Open the uploaded image
     image = Image.open(uploaded_image)
-    
-    # Convert image to JPEG format
     buffered = io.BytesIO()
     image.save(buffered, format="JPEG")
-    
-    # Encode image to base64
     return base64.b64encode(buffered.getvalue()).decode('utf-8')
 
+# Placeholder function for image caption
 def get_image_caption(image):
     return "Placeholder caption for the uploaded image."
 
+# Function to generate images using Segmind API
 def generate_images(base64image, imagecaption, count):
     url = "https://api.segmind.com/v1/ssd-img2img"
     generated_images = []
@@ -35,7 +31,6 @@ def generate_images(base64image, imagecaption, count):
         data = {
             "image": base64image,
             "prompt": imagecaption + ", stock photo",
-            # Add other parameters as required by the API
         }
 
         # Send a POST request to the API
@@ -49,6 +44,7 @@ def generate_images(base64image, imagecaption, count):
 
     return generated_images
 
+# Function to process uploaded image and generate images
 def process_image(uploaded_image, count):
     base64image = get_base64_image(uploaded_image)
     imagecaption = get_image_caption(uploaded_image)
@@ -60,7 +56,10 @@ def main():
     st.title("Discover Your Doppelgänger with AI, Crafted by Arth")
     st.markdown("📷 Upload your passport-style or similar photo to generate your look-alike")
     st.info("Please note: For faster results, upload a pic less than 500KB.")
-    
+
+    # Load sample image
+    sample_image = Image.open("sample_upload.jpg")
+
     uploaded_image = st.file_uploader("Upload Image", type=['jpg', 'jpeg', 'png'])
 
     if uploaded_image is not None:
@@ -72,9 +71,25 @@ def main():
             st.text("AI Generated Caption:")
             st.text(imagecaption)
 
-            # Display each generated image with its caption
+            # Display uploaded image on the left
+            col1, col2 = st.columns(2)
+            col1.subheader("Uploaded Image:")
+            col1.image(uploaded_image, caption="Uploaded Image", use_column_width=True)
+
+            # Display sample image
+            col2.subheader("Sample Image:")
+            col2.image(sample_image, caption="Sample Image", use_column_width=True)
+
+            # Display generated images on the right
+            st.subheader("Generated Images:")
             for i, image in enumerate(generated_images):
-                st.image(image, caption=f"Generated Image {i+1}", width=200)
-                
+                st.image(image, caption=f"Generated Image {i+1}", use_column_width=True)
+
+    # Note about potential API key limitations
+    st.markdown("""
+        **Note:** If you encounter issues with the application not generating images, 
+        it could be due to the usage of a freely available API key, which may have reached its usage limit.
+    """)
+
 if __name__ == "__main__":
     main()
